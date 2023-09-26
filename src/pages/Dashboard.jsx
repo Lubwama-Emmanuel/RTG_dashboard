@@ -1,51 +1,22 @@
 import { useState } from "react";
 import Button from "../ui/Button";
 import DropDown from "../ui/DropDown";
-
-const dellProducts = [
-  {
-    id: 0,
-    itemName: "xps",
-  },
-  {
-    id: 1,
-    itemName: "precision",
-  },
-];
-
-const hpProducts = [
-  {
-    id: 0,
-    itemName: "elitebook",
-  },
-  {
-    id: 1,
-    itemName: "spectre",
-  },
-];
-
-const brands = [
-  {
-    id: 0,
-    itemName: "dell",
-  },
-  {
-    id: 1,
-    itemName: "hp",
-  },
-  {
-    id: 2,
-    itemName: "lenovo",
-  },
-  {
-    id: 3,
-    itemName: "acer",
-  },
-];
+import {
+  dellProducts,
+  brands,
+  hpProducts,
+  cores,
+  ryzens,
+  generations,
+  ssd,
+  hdd,
+} from "../../Data";
 
 export default function Dashboard() {
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
+  const [processor, setProcessor] = useState("");
+  const [storage, setStorage] = useState("ssd");
 
   let newLaptop = {};
 
@@ -58,10 +29,6 @@ export default function Dashboard() {
 
     setName("");
   }
-
-  // function handleSetBrand(){
-  //   setBrand()
-  // }
 
   return (
     <div className="">
@@ -96,6 +63,45 @@ export default function Dashboard() {
               <option value="acer">acer</option>
             </select>
           </div> */}
+        </div>
+        <div className="flex">
+          <DropDown
+            selectedValue={processor}
+            label="processor"
+            options={["intel", "amd"]}
+            onChange={(e) => setProcessor(e.target.value)}
+          />
+          {processor === "intel" && (
+            <div className="flex">
+              <DropDown label="core" options={cores} />
+              <DropDown label="generation" options={generations} />
+            </div>
+          )}
+          {processor === "amd" && <DropDown label="ryzen" options={ryzens} />}
+        </div>
+        <div className="flex">
+          <DropDown
+            selectedValue={storage}
+            label="storage"
+            options={["ssd", "hdd"]}
+            onChange={(e) => setStorage(e.target.value)}
+          />
+          {storage === "ssd" && (
+            <div className="flex">
+              <DropDown label="size" options={ssd} />
+            </div>
+          )}
+          {storage === "hdd" && <DropDown label="size" options={hdd} />}
+        </div>
+        <div className="flex flex-col items-start">
+          <label>Description</label>
+          <input
+            type="text"
+            placeholder="Enter laptop description"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="rounded-lg focus:outline-none focus:ring focus:ring-emerald-600 focus:ring-offset-2"
+          />
         </div>
       </form>
       <Button>{"submit"}</Button>
