@@ -1,6 +1,8 @@
 import { useState } from "react";
-import Button from "../ui/Button";
 import DropDown from "../ui/DropDown";
+import Button from "../ui/Button";
+import axios from "axios";
+
 import {
   dellProducts,
   brands,
@@ -12,22 +14,48 @@ import {
   hdd,
 } from "../../Data";
 
+const baseUrl = `http://127.0.0.1:9000/api/v1`;
+
 export default function Dashboard() {
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
+  const [productLine, setProductLine] = useState("");
+  const [core, setCore] = useState("");
+  const [generation, setGeneration] = useState("");
   const [processor, setProcessor] = useState("");
   const [storage, setStorage] = useState("ssd");
+  const [size, setSize] = useState("");
+  const [image, setImage] = useState(null);
 
-  let newLaptop = {};
-
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    newLaptop.name = name;
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("name", name);
+    formData.append("brand", brand);
+    formData.append("processor", processor);
+    formData.append("storage", storage);
+    formData.append("size", size);
+    formData.append("generation", generation);
+    formData.append("core", core);
 
-    console.log(newLaptop);
+    try {
+      await axios.post(`${baseUrl}/laptops/addLaptop`, formData);
+    } catch (error) {
+      return;
+    }
 
     setName("");
+    setBrand("");
+    setCore("");
+    setGeneration("");
+    setProcessor("");
+    setProcessor("");
+    setProductLine("");
+    setSize("");
+    setImage(null);
+    setStorage("");
   }
 
   return (
@@ -44,6 +72,10 @@ export default function Dashboard() {
             className="rounded-lg focus:outline-none focus:ring focus:ring-emerald-600 focus:ring-offset-2"
           />
         </div>
+        <div className="flex flex-col items-start">
+          <label>Laptop Image</label>
+          <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+        </div>
         <div className="flex">
           <DropDown
             options={brands}
@@ -52,17 +84,21 @@ export default function Dashboard() {
             onChange={(e) => setBrand(e.target.value)}
           />
           {brand === "dell" && (
-            <DropDown options={dellProducts} label="products" />
+            <DropDown
+              selectedValue={productLine}
+              onChange={(e) => setProductLine(e.target.value)}
+              options={dellProducts}
+              label="products"
+            />
           )}
-          {brand === "hp" && <DropDown options={hpProducts} label="products" />}
-          {/* <div className="flex flex-col items-start">
-            <label>Catergory</label>
-            <select>
-              <option value="Gaming">Gaming</option>
-              <option value="lenovo">lenovo</option>
-              <option value="acer">acer</option>
-            </select>
-          </div> */}
+          {brand === "hp" && (
+            <DropDown
+              selectedValue={productLine}
+              onChange={(e) => setProductLine(e.target.value)}
+              options={hpProducts}
+              label="products"
+            />
+          )}
         </div>
         <div className="flex">
           <DropDown
@@ -73,11 +109,28 @@ export default function Dashboard() {
           />
           {processor === "intel" && (
             <div className="flex">
-              <DropDown label="core" options={cores} />
-              <DropDown label="generation" options={generations} />
+              <DropDown
+                selectedValue={core}
+                onChange={(e) => setCore(e.target.value)}
+                label="core"
+                options={cores}
+              />
+              <DropDown
+                selectedValue={generation}
+                onChange={(e) => setGeneration(e.target.value)}
+                label="generation"
+                options={generations}
+              />
             </div>
           )}
-          {processor === "amd" && <DropDown label="ryzen" options={ryzens} />}
+          {processor === "amd" && (
+            <DropDown
+              selectedValue={core}
+              onChange={(e) => setCore(e.target.value)}
+              label="ryzen"
+              options={ryzens}
+            />
+          )}
         </div>
         <div className="flex">
           <DropDown
@@ -88,10 +141,22 @@ export default function Dashboard() {
           />
           {storage === "ssd" && (
             <div className="flex">
-              <DropDown label="size" options={ssd} />
+              <DropDown
+                selectedValue={size}
+                onChange={(e) => setSize(e.target.value)}
+                label="size"
+                options={ssd}
+              />
             </div>
           )}
-          {storage === "hdd" && <DropDown label="size" options={hdd} />}
+          {storage === "hdd" && (
+            <DropDown
+              selectedValue={size}
+              onChange={(e) => setSize(e.target.value)}
+              label="size"
+              options={hdd}
+            />
+          )}
         </div>
         <div className="flex flex-col items-start">
           <label>Description</label>
@@ -103,8 +168,8 @@ export default function Dashboard() {
             className="rounded-lg focus:outline-none focus:ring focus:ring-emerald-600 focus:ring-offset-2"
           />
         </div>
+        <Button>{"submit"}</Button>
       </form>
-      <Button>{"submit"}</Button>
     </div>
   );
 }
