@@ -18,6 +18,7 @@ import Label from "../ui/Label";
 const baseUrl = `http://127.0.0.1:9000/api/v1`;
 
 export default function Dashboard() {
+  // To handle these state all together
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("dell");
   const [productLine, setProductLine] = useState("");
@@ -63,15 +64,15 @@ export default function Dashboard() {
       return;
     }
 
-    // setName("");
-    // setBrand("");
-    // setCore("");
-    // setGeneration("");
-    // setProcessor("");
-    // setProcessor("");
-    // setProductLine("");
-    // setSize("");
-    // setStorage("");
+    setName("");
+    setBrand("");
+    setCore("");
+    setGeneration("");
+    setProcessor("");
+    setProcessor("");
+    setProductLine("");
+    setSize("");
+    setStorage("");
   }
 
   function handleImagesUpload(e) {
@@ -231,7 +232,7 @@ export default function Dashboard() {
             className="w-56 rounded-lg border border-emerald-500 px-2 py-1 focus:outline-none focus:ring focus:ring-emerald-600 focus:ring-offset-2"
           />
         </div>
-        <button>submit</button>
+        <button onClick={handleSubmit}>submit</button>
       </form>
     </div>
   );
