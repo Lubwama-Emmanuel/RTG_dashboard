@@ -15,6 +15,7 @@ import {
 } from "../../Data";
 import Label from "../ui/Label";
 
+// change api to production baseURL
 const baseUrl = `http://127.0.0.1:9000/api/v1`;
 
 export default function Dashboard() {
