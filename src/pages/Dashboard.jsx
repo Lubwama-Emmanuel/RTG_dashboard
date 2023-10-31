@@ -19,7 +19,7 @@ import Label from "../ui/Label";
 const baseUrl = `http://127.0.0.1:9000/api/v1`;
 
 export default function Dashboard() {
-  // To handle these state all together to make code look better
+  // To handle these state all together to make code look better and organized
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("dell");
   const [productLine, setProductLine] = useState("");
