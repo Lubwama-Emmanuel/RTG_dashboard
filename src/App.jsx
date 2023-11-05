@@ -3,6 +3,7 @@ import AppLayout from "./ui/AppLayout";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 
+// Entry
 export default function App() {
   const router = createBrowserRouter([
     {
