@@ -1,4 +1,5 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
+
 export default function Button({ children, handleClick }) {
   return (
     <button
@@ -9,3 +10,8 @@ export default function Button({ children, handleClick }) {
     </button>
   );
 }
+
+Button.propTypes = {
+  children: PropTypes.node.isRequired,
+  handleClick: PropTypes.func.isRequired,
+};

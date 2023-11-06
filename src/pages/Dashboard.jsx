@@ -14,31 +14,40 @@ import {
   hdd,
 } from "../../Data";
 import Label from "../ui/Label";
+import Button from "../ui/Button";
 
 // change api to production baseURL
 const baseUrl = `http://127.0.0.1:9000/api/v1`;
 
+const initialState = {
+  name: "",
+  brand: "",
+  productLine: "",
+  core: "",
+  generation: "",
+  processor: "",
+  storage: "",
+  size: "",
+  screen: "",
+  price: "",
+  desc: "",
+};
+
 export default function Dashboard() {
-  // To handle these state all together to make code look better and organized for better readability
-  const [name, setName] = useState("");
-  const [brand, setBrand] = useState("dell");
-  const [productLine, setProductLine] = useState("");
-  const [core, setCore] = useState("");
-  const [generation, setGeneration] = useState("");
-  const [processor, setProcessor] = useState("");
-  const [storage, setStorage] = useState("ssd");
-  const [size, setSize] = useState("");
   const [image, setImage] = useState("");
   const [images, setImages] = useState([]);
-  const [screen, setScreen] = useState("");
-  const [price, setPrice] = useState("");
-  const [desc, setDesc] = useState("");
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  const [specs, setSpecs] = useState(initialState);
 
+  // Function to handle updating specs
+  function handleSpecs(inputField, value) {
+    setSpecs((currentState) => {
+      return { ...currentState, [inputField]: value };
+    });
+  }
+
+  async function handleSubmit() {
     const formData = new FormData();
-    // formData.append("images", images);
 
     formData.append("images", image);
 
@@ -46,34 +55,25 @@ export default function Dashboard() {
       formData.append("images", img);
     });
 
-    formData.append("name", name);
-    formData.append("brand", brand);
-    formData.append("processor", processor);
-    formData.append("storage", storage);
-    formData.append("size", size);
-    formData.append("generation", generation);
-    formData.append("screen", screen);
-    formData.append("price", price);
-    formData.append("core", core);
-    formData.append("desc", desc);
+    formData.append("name", specs.name);
+    formData.append("brand", specs.brand);
+    formData.append("processor", specs.processor);
+    formData.append("storage", specs.storage);
+    formData.append("size", specs.size);
+    formData.append("generation", specs.generation);
+    formData.append("screen", specs.screen);
+    formData.append("price", specs.price);
+    formData.append("core", specs.core);
+    formData.append("desc", specs.desc);
 
     console.log(formData);
 
     try {
       await axios.post(`${baseUrl}/laptops/addLaptop`, formData);
     } catch (error) {
+      console.log("AN ERROR OCCURED DURING ADDING LAPTOP DATA", error);
       return;
     }
-
-    setName("");
-    setBrand("");
-    setCore("");
-    setGeneration("");
-    setProcessor("");
-    setProcessor("");
-    setProductLine("");
-    setSize("");
-    setStorage("");
   }
 
   function handleImagesUpload(e) {
@@ -90,8 +90,8 @@ export default function Dashboard() {
           <input
             type="text"
             placeholder="Enter laptop name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={specs.name}
+            onChange={(e) => handleSpecs("name", e.target.value)}
             className="w-56 rounded-lg border border-emerald-500 px-2 py-1 focus:outline-none focus:ring focus:ring-emerald-600 focus:ring-offset-2"
           />
         </div>
@@ -114,21 +114,21 @@ export default function Dashboard() {
           <DropDown
             options={brands}
             label="Brand"
-            selectedValue={brand}
-            onChange={(e) => setBrand(e.target.value)}
+            selectedValue={specs.brand}
+            onChange={(e) => handleSpecs("brand", e.target.value)}
           />
-          {brand === "dell" && (
+          {specs.brand === "dell" && (
             <DropDown
-              selectedValue={productLine}
-              onChange={(e) => setProductLine(e.target.value)}
+              selectedValue={specs.productLine}
+              onChange={(e) => handleSpecs("productLine", e.target.value)}
               options={dellProducts}
               label="products"
             />
           )}
-          {brand === "hp" && (
+          {specs.brand === "hp" && (
             <DropDown
-              selectedValue={productLine}
-              onChange={(e) => setProductLine(e.target.value)}
+              selectedValue={specs.productLine}
+              onChange={(e) => handleSpecs("productLine", e.target.value)}
               options={hpProducts}
               label="products"
             />
@@ -136,31 +136,31 @@ export default function Dashboard() {
         </div>
         <div className="flex gap-5">
           <DropDown
-            selectedValue={processor}
             label="processor"
-            options={["intel", "amd"]}
-            onChange={(e) => setProcessor(e.target.value)}
+            options={["Choose Processor Type", "intel", "amd"]}
+            selectedValue={specs.processor}
+            onChange={(e) => handleSpecs("processor", e.target.value)}
           />
-          {processor === "intel" && (
+          {specs.processor === "intel" && (
             <div className="flex gap-5">
               <DropDown
-                selectedValue={core}
-                onChange={(e) => setCore(e.target.value)}
+                selectedValue={specs.core}
+                onChange={(e) => handleSpecs("core", e.target.value)}
                 label="core"
                 options={cores}
               />
               <DropDown
-                selectedValue={generation}
-                onChange={(e) => setGeneration(e.target.value)}
+                selectedValue={specs.generation}
+                onChange={(e) => handleSpecs("generation", e.target.value)}
                 label="generation"
                 options={generations}
               />
             </div>
           )}
-          {processor === "amd" && (
+          {specs.processor === "amd" && (
             <DropDown
-              selectedValue={core}
-              onChange={(e) => setCore(e.target.value)}
+              selectedValue={specs.core}
+              onChange={(e) => handleSpecs("core", e.target.value)}
               label="ryzen"
               options={ryzens}
             />
@@ -168,25 +168,25 @@ export default function Dashboard() {
         </div>
         <div className="flex gap-5">
           <DropDown
-            selectedValue={storage}
             label="storage"
-            options={["ssd", "hdd"]}
-            onChange={(e) => setStorage(e.target.value)}
+            options={["Choose Storage Type", "ssd", "hdd"]}
+            selectedValue={specs.storage}
+            onChange={(e) => handleSpecs("storage", e.target.value)}
           />
-          {storage === "ssd" && (
+          {specs.storage === "ssd" && (
             <div className="flex">
               <DropDown
-                selectedValue={size}
-                onChange={(e) => setSize(e.target.value)}
+                selectedValue={specs.size}
+                onChange={(e) => handleSpecs("size", e.target.value)}
                 label="size"
                 options={ssd}
               />
             </div>
           )}
-          {storage === "hdd" && (
+          {specs.storage === "hdd" && (
             <DropDown
-              selectedValue={size}
-              onChange={(e) => setSize(e.target.value)}
+              selectedValue={specs.size}
+              onChange={(e) => handleSpecs("size", e.target.value)}
               label="size"
               options={hdd}
             />
@@ -195,20 +195,20 @@ export default function Dashboard() {
 
         <div className="flex gap-5">
           <DropDown
-            selectedValue={screen}
-            onChange={(e) => setScreen(e.target.value)}
+            selectedValue={specs.screen}
+            onChange={(e) => handleSpecs("screen", e.target.value)}
             label="Screen"
             options={["4k", "1080p"]}
           />
           <DropDown
-            selectedValue={screen}
-            onChange={(e) => setScreen(e.target.value)}
+            selectedValue={specs.screen}
+            onChange={(e) => handleSpecs("screen", e.target.value)}
             label="Type"
             options={["touch", "non-touch"]}
           />
           <DropDown
-            selectedValue={screen}
-            onChange={(e) => setScreen(e.target.value)}
+            selectedValue={specs.screen}
+            onChange={(e) => handleSpecs("screen", e.target.value)}
             label="Size"
             options={["13", "14"]}
           />
@@ -217,23 +217,22 @@ export default function Dashboard() {
           <Label>{"Price"}</Label>
           <input
             type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            value={specs.price}
+            onChange={(e) => handleSpecs("price", e.target.value)}
             placeholder="Enter price"
             className="w-56 rounded-lg border border-emerald-500 px-2 py-1 focus:outline-none focus:ring focus:ring-emerald-600 focus:ring-offset-2"
           />
         </div>
         <div className="flex gap-5">
           <Label>Description</Label>
-          <input
-            type="text"
+          <textarea
             placeholder="Enter laptop description"
-            value={desc}
-            onChange={(e) => setDesc(e.target.value)}
-            className="w-56 rounded-lg border border-emerald-500 px-2 py-1 focus:outline-none focus:ring focus:ring-emerald-600 focus:ring-offset-2"
+            value={specs.desc}
+            onChange={(e) => handleSpecs("desc", e.target.value)}
+            className="w-64 rounded-lg border border-emerald-500 px-2 py-1 focus:outline-none focus:ring focus:ring-emerald-600 focus:ring-offset-2"
           />
         </div>
-        <button onClick={handleSubmit}>submit</button>
+        <Button handleClick={handleSubmit}>submit</Button>
       </form>
     </div>
   );
