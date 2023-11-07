@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 
+// Reusable button
 export default function Button({ children, handleClick }) {
   return (
     <button
