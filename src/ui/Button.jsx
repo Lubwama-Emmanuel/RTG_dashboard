@@ -12,6 +12,7 @@ export default function Button({ children, handleClick }) {
   );
 }
 
+// Validating Button props
 Button.propTypes = {
   children: PropTypes.node.isRequired,
   handleClick: PropTypes.func.isRequired,
