@@ -16,3 +16,7 @@ export async function getLaptops() {
     return;
   }
 }
+
+export async function getLaptop() {
+  return;
+}
