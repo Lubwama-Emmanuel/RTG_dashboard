@@ -20,3 +20,7 @@ export async function getLaptops() {
 export async function getLaptop() {
   return;
 }
+
+export async function postLaptop() {
+  return;
+}
