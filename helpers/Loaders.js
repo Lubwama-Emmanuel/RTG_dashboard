@@ -17,6 +17,7 @@ export async function getLaptops() {
   }
 }
 
+// get all laptops
 export async function getLaptop() {
   return;
 }
