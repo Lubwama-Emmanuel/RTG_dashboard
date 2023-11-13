@@ -22,6 +22,7 @@ export async function getLaptop() {
   return;
 }
 
+// add a laptop
 export async function postLaptop() {
   return;
 }
