@@ -76,6 +76,7 @@ export default function Dashboard() {
     }
   }
 
+  // function to handle all states
   function handleImagesUpload(e) {
     const files = Array.from(e.target.files);
     setImages(files);
