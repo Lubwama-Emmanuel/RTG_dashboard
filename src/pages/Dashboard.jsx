@@ -66,8 +66,6 @@ export default function Dashboard() {
     formData.append("core", specs.core);
     formData.append("desc", specs.desc);
 
-    console.log(formData);
-
     try {
       await axios.post(`${baseUrl}/laptops/addLaptop`, formData);
     } catch (error) {

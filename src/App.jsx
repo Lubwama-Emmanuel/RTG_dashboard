@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AppLayout from "./ui/AppLayout";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
-import { getLaptops } from "../helpers/Loaders";
+// import { getLaptops } from "../helpers/Loaders";
 
 // Entry
 export default function App() {
@@ -13,7 +13,7 @@ export default function App() {
         {
           path: "/",
           element: <Home />,
-          loader: getLaptops,
+          // loader: getLaptops,
         },
         {
           path: "/dashboard",
