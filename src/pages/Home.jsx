@@ -17,7 +17,6 @@ export default function Home() {
   return (
     <div>
       <h2>Statistics</h2>
-      {/* <h2>{data.data.length}</h2> */}
     </div>
   );
 }
