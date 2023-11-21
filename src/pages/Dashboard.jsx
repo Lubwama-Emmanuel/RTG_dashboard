@@ -18,6 +18,7 @@ import Button from "../ui/Button";
 // change api to production baseURL
 const baseUrl = `http://127.0.0.1:9000/api/v1`;
 
+// IntialState for the dashboard
 const initialState = {
   name: "",
   brand: "",
